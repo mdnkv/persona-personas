@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: persona-personas
+  datasource:
+    url: jdbc:postgresql://localhost:5432/persona_db
+    username: persona_user
+    password: secret1234
+  jpa:
+    hibernate:
+      ddl-auto: validate
+server:
+  port: 8000
+
