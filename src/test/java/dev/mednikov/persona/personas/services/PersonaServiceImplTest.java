@@ -1,10 +1,10 @@
 package dev.mednikov.persona.personas.services;
 
-import dev.mednikov.persona.personas.domain.CreatePersonaRequestDto;
-import dev.mednikov.persona.personas.domain.PersonaResponseDto;
-import dev.mednikov.persona.personas.domain.UpdatePersonaRequestDto;
+import dev.mednikov.persona.personas.domain.CreatePersonaRequest;
+import dev.mednikov.persona.personas.domain.PersonaResponse;
+import dev.mednikov.persona.personas.domain.UpdatePersonaRequest;
 import dev.mednikov.persona.personas.exceptions.PersonaDoesNotExistException;
-import dev.mednikov.persona.personas.mappers.PersonaResponseDtoMapper;
+import dev.mednikov.persona.personas.mappers.PersonaResponseMapper;
 import dev.mednikov.persona.personas.models.Persona;
 import dev.mednikov.persona.personas.models.PersonaGenderType;
 import dev.mednikov.persona.personas.models.PersonaRelationshipType;
@@ -30,7 +30,7 @@ class PersonaServiceImplTest {
 
     @BeforeEach
     void setup(){
-        PersonaResponseDtoMapper mapper = Mappers.getMapper(PersonaResponseDtoMapper.class);
+        PersonaResponseMapper mapper = Mappers.getMapper(PersonaResponseMapper.class);
         this.personaService = new PersonaServiceImpl(personaRepository, mapper);
     }
 
@@ -49,8 +49,8 @@ class PersonaServiceImplTest {
 
         Mockito.when(personaRepository.save(Mockito.any(Persona.class))).thenReturn(persona);
 
-        CreatePersonaRequestDto request = new CreatePersonaRequestDto(personaName, PersonaGenderType.FEMALE);
-        PersonaResponseDto result = personaService.createPersona(request);
+        CreatePersonaRequest request = new CreatePersonaRequest(personaName, PersonaGenderType.FEMALE);
+        PersonaResponse result = personaService.createPersona(request);
 
         Assertions.assertThat(result).isNotNull()
                 .hasFieldOrPropertyWithValue("id", personaId)
@@ -68,7 +68,7 @@ class PersonaServiceImplTest {
         UUID userId = UUID.randomUUID();
         String personaName = "Elisa";
 
-        UpdatePersonaRequestDto request = new UpdatePersonaRequestDto(
+        UpdatePersonaRequest request = new UpdatePersonaRequest(
                 personaId,
                 personaName,
                 PersonaRelationshipType.ROMANTIC,
@@ -95,7 +95,7 @@ class PersonaServiceImplTest {
         persona.setBackstory("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
         persona.setActive(true);
 
-        UpdatePersonaRequestDto request = new UpdatePersonaRequestDto(
+        UpdatePersonaRequest request = new UpdatePersonaRequest(
                 personaId,
                 personaName,
                 PersonaRelationshipType.ROMANTIC,
@@ -106,7 +106,7 @@ class PersonaServiceImplTest {
         Mockito.when(personaRepository.findById(personaId)).thenReturn(Optional.of(persona));
         Mockito.when(personaRepository.save(Mockito.any(Persona.class))).thenReturn(persona);
 
-        PersonaResponseDto result = personaService.updatePersona(request);
+        PersonaResponse result = personaService.updatePersona(request);
 
         Assertions.assertThat(result).isNotNull()
                 .hasFieldOrPropertyWithValue("id", personaId)
@@ -134,7 +134,7 @@ class PersonaServiceImplTest {
 
         Mockito.when(personaRepository.findById(personaId)).thenReturn(Optional.of(persona));
 
-        Optional<PersonaResponseDto> result = personaService.getPersonaById(personaId);
+        Optional<PersonaResponse> result = personaService.getPersonaById(personaId);
 
         Assertions.assertThat(result).isNotNull().isPresent();
     }
@@ -144,7 +144,7 @@ class PersonaServiceImplTest {
         UUID personaId = UUID.randomUUID();
         Mockito.when(personaRepository.findById(personaId)).thenReturn(Optional.empty());
 
-        Optional<PersonaResponseDto> result = personaService.getPersonaById(personaId);
+        Optional<PersonaResponse> result = personaService.getPersonaById(personaId);
 
         Assertions.assertThat(result).isNotNull().isEmpty();
     }

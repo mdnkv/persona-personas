@@ -5,11 +5,12 @@ import dev.mednikov.persona.personas.models.PersonaRelationshipType;
 
 import java.util.UUID;
 
-public record UpdatePersonaRequestDto(
+public record PersonaResponse(
         UUID id,
         String name,
         PersonaRelationshipType relationshipType,
         PersonaGenderType gender,
-        String backstory
+        String backstory,
+        boolean active
 ) {
 }

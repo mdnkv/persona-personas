@@ -1,10 +1,10 @@
 package dev.mednikov.persona.personas.services;
 
-import dev.mednikov.persona.personas.domain.CreatePersonaRequestDto;
-import dev.mednikov.persona.personas.domain.PersonaResponseDto;
-import dev.mednikov.persona.personas.domain.UpdatePersonaRequestDto;
+import dev.mednikov.persona.personas.domain.CreatePersonaRequest;
+import dev.mednikov.persona.personas.domain.PersonaResponse;
+import dev.mednikov.persona.personas.domain.UpdatePersonaRequest;
 import dev.mednikov.persona.personas.exceptions.PersonaDoesNotExistException;
-import dev.mednikov.persona.personas.mappers.PersonaResponseDtoMapper;
+import dev.mednikov.persona.personas.mappers.PersonaResponseMapper;
 import dev.mednikov.persona.personas.models.Persona;
 import dev.mednikov.persona.personas.models.PersonaRelationshipType;
 import dev.mednikov.persona.personas.repositories.PersonaRepository;
@@ -18,15 +18,15 @@ import java.util.UUID;
 public class PersonaServiceImpl implements PersonaService{
 
     private final PersonaRepository personaRepository;
-    private final PersonaResponseDtoMapper mapper;
+    private final PersonaResponseMapper mapper;
 
-    public PersonaServiceImpl(PersonaRepository personaRepository, PersonaResponseDtoMapper mapper) {
+    public PersonaServiceImpl(PersonaRepository personaRepository, PersonaResponseMapper mapper) {
         this.personaRepository = personaRepository;
         this.mapper = mapper;
     }
 
     @Override
-    public PersonaResponseDto createPersona(CreatePersonaRequestDto request) {
+    public PersonaResponse createPersona(CreatePersonaRequest request) {
         Persona persona = new Persona();
         persona.setName(request.name());
         persona.setActive(true);
@@ -41,7 +41,7 @@ public class PersonaServiceImpl implements PersonaService{
     }
 
     @Override
-    public PersonaResponseDto updatePersona(UpdatePersonaRequestDto request) {
+    public PersonaResponse updatePersona(UpdatePersonaRequest request) {
         Persona persona = this.personaRepository.findById(request.id())
                 .orElseThrow(() -> new PersonaDoesNotExistException(request.id()));
         persona.setName(request.name());
@@ -63,12 +63,12 @@ public class PersonaServiceImpl implements PersonaService{
     }
 
     @Override
-    public Optional<PersonaResponseDto> getPersonaById(UUID personaId) {
+    public Optional<PersonaResponse> getPersonaById(UUID personaId) {
         return this.personaRepository.findById(personaId).map(mapper::toDto);
     }
 
     @Override
-    public List<PersonaResponseDto> getPersonas() {
+    public List<PersonaResponse> getPersonas() {
         return this.personaRepository.findAll().stream().map(mapper::toDto).toList();
     }
 }

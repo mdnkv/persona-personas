@@ -1,8 +1,8 @@
 package dev.mednikov.persona.personas.controllers;
 
-import dev.mednikov.persona.personas.domain.CreatePersonaRequestDto;
-import dev.mednikov.persona.personas.domain.PersonaResponseDto;
-import dev.mednikov.persona.personas.domain.UpdatePersonaRequestDto;
+import dev.mednikov.persona.personas.domain.CreatePersonaRequest;
+import dev.mednikov.persona.personas.domain.PersonaResponse;
+import dev.mednikov.persona.personas.domain.UpdatePersonaRequest;
 import dev.mednikov.persona.personas.services.PersonaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +25,12 @@ public class PersonaRestController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody PersonaResponseDto createPersona (@RequestBody CreatePersonaRequestDto body){
+    public @ResponseBody PersonaResponse createPersona (@RequestBody CreatePersonaRequest body){
         return this.personaService.createPersona(body);
     }
 
     @PutMapping
-    public @ResponseBody PersonaResponseDto updatePersona (@RequestBody UpdatePersonaRequestDto body){
+    public @ResponseBody PersonaResponse updatePersona (@RequestBody UpdatePersonaRequest body){
         return this.personaService.updatePersona(body);
     }
 
@@ -41,13 +41,13 @@ public class PersonaRestController {
     }
 
     @GetMapping("/{personaId}")
-    public ResponseEntity<PersonaResponseDto> getPersonaById (@PathVariable UUID personaId){
-        Optional<PersonaResponseDto> result = this.personaService.getPersonaById(personaId);
+    public ResponseEntity<PersonaResponse> getPersonaById (@PathVariable UUID personaId){
+        Optional<PersonaResponse> result = this.personaService.getPersonaById(personaId);
         return ResponseEntity.of(result);
     }
 
     @GetMapping
-    public @ResponseBody List<PersonaResponseDto> getPersonas (){
+    public @ResponseBody List<PersonaResponse> getPersonas (){
         return this.personaService.getPersonas();
     }
 
