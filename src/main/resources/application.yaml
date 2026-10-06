@@ -8,6 +8,14 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+  cloud:
+    consul:
+      discovery:
+        prefer-ip-address: true
 server:
   port: 8001
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
